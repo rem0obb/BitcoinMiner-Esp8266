@@ -17,9 +17,10 @@ void MinerBitcoin::MinerBit(void)
     Serial.begin(Port);
 
     pinLight();
-    unsigned long start = micros();
 
-    HexDecode(header_hex, strlen(header_hex) , HashBytes);
+    start_t = micros();
+
+    HexDecode(HeaderHex, strlen(HeaderHex) , HashBytes);
     
     Hasher.doUpdate(HashBytes, sizeof(HashBytes));
     byte hash[SHA256_SIZE];
@@ -29,18 +30,18 @@ void MinerBitcoin::MinerBit(void)
     byte hash2[SHA256_SIZE];
     HashAgain.doFinal(hash2);
     
-    unsigned long ended = micros(); 
-    unsigned long delta = ended - start;
-    
+    end_t = micros();
+    total_t = (end_t - start_t);
+
+    Serial.print("\n\n\nNonce:");Serial.println(total_t);
     pinLow();
-    Serial.printf("\nTime: %lu\n", delta);
 
     /*Bytes are stored in descending order of their 
     "numeric weight" at successive memory addresses 
     (largest end first or big-endian). */
     Serial.print("Big Endian: ");
-    for (byte i=32; i > 0; i--){
-        if(hash2[i-1]<16)
+    for(byte i=32; i > 0; i--){
+        if(hash2[i-1]<0x10)
         { 
             Serial.print('0');
         }
@@ -54,7 +55,7 @@ void MinerBitcoin::MinerBit(void)
     (small end first or little-endian).*/
     Serial.print("Little Endian: ");
     for (byte i=0; i < SHA256_SIZE ; i++){
-        if(hash2[i]<16) 
+        if(hash2[i]<0x10) 
         {
              Serial.print('0'); 
         }
