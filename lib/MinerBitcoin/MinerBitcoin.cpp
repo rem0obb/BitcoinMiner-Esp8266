@@ -30,20 +30,19 @@ void MinerBitcoin::MinerBit(void)
     byte hash2[SHA256_SIZE];
     HashAgain.doFinal(hash2);
     
-<<<<<<< HEAD
+    
     end_t = micros();
     total_t = (end_t - start_t);
 
     Serial.print("\n\n\nNonce:");Serial.println(total_t);
     pinLow();
 
-=======
     unsigned long ended = micros(); 
     unsigned long delta = ended - start;
     
     Serial.printf("\nNonce: %lu\n", delta);
     pinLow();
->>>>>>> b423e0f86b01ff3c90af09d47bbc8a5fdf017fc7
+
     /*Bytes are stored in descending order of their 
     "numeric weight" at successive memory addresses 
     (largest end first or big-endian). */
