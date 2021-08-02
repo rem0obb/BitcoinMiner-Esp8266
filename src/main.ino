@@ -3,6 +3,8 @@
 MinerBitcoin miner;
 
 void setup() {
+   
+  miner.MinerBit();
 
 }
 
