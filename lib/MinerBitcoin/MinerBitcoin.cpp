@@ -32,9 +32,8 @@ void MinerBitcoin::MinerBit(void)
     unsigned long ended = micros(); 
     unsigned long delta = ended - start;
     
+    Serial.printf("\nNonce: %lu\n", delta);
     pinLow();
-    Serial.printf("\nTime: %lu\n", delta);
-
     /*Bytes are stored in descending order of their 
     "numeric weight" at successive memory addresses 
     (largest end first or big-endian). */
