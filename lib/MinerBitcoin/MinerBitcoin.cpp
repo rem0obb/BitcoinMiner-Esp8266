@@ -34,7 +34,7 @@ void MinerBitcoin::MinerBit(void)
     end_t = micros();
     total_t = (end_t - start_t);
 
-    Serial.print("\n\n\nNonce:");Serial.println(total_t);
+    Serial.print("\n\n\nTime:");Serial.println(total_t);
     pinLow();
 
     unsigned long ended = micros(); 
