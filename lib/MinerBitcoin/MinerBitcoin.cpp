@@ -1,72 +1,64 @@
 #include <MinerBitcoin.hpp>
 
-uint8_t* HexDecode(const char* value, size_t len, uint8_t* output)
-{
-    unsigned int i, mg, ng, rg;
-    for(mg = 0, i = 0; i < len; i+=2,++mg)
-    {
-        ng = (value[i] > '9' )  ? value[i]   - 'a' + 10 : value[i]   - '0';
-        rg = (value[i+1] > '9') ? value[i+1] - 'a' + 10 : value[i+1] - '0';
-        output[mg] = (ng << 4 ) | rg;
-    }
-    return output;
-}
+// ========================= Miner  ========================= //
 
-void MinerBitcoin::MinerBit(void)
-{
-    Serial.begin(Port);
+byte hash[SHA256_SIZE]; // Generate Hash variable
 
-    pinLight();
+void MinerBitcoin::sha256(std::string str)
+{   
+    SHA256 Hasher;
+    SHA256 HashAgain;
+    
+    int8_t start_t=0, end_t=0, total_t=0;
 
     start_t = micros();
 
-    HexDecode(HeaderHex, strlen(HeaderHex) , HashBytes);
-    
-    Hasher.doUpdate(HashBytes, sizeof(HashBytes));
-    byte hash[SHA256_SIZE];
-    Hasher.doFinal(hash);
+    HashAgain.doUpdate((byte*)&str, str.size());
+    HashAgain.doFinal(hash);
 
-    HashAgain.doUpdate(hash, sizeof(hash));
-    byte hash2[SHA256_SIZE];
-    HashAgain.doFinal(hash2);
-    
-<<<<<<< HEAD
     end_t = micros();
-    total_t = (end_t - start_t);
-
-    Serial.print("\n\n\nNonce:");Serial.println(total_t);
-    pinLow();
-
-=======
-    unsigned long ended = micros(); 
-    unsigned long delta = ended - start;
+    total_t = (start_t - end_t);
     
-    Serial.printf("\nNonce: %lu\n", delta);
-    pinLow();
->>>>>>> b423e0f86b01ff3c90af09d47bbc8a5fdf017fc7
-    /*Bytes are stored in descending order of their 
-    "numeric weight" at successive memory addresses 
-    (largest end first or big-endian). */
-    Serial.print("Big Endian: ");
-    for(byte i=32; i > 0; i--){
-        if(hash2[i-1]<0x10)
-        { 
-            Serial.print('0');
-        }
-        Serial.print(hash2[i-1], HEX);
-    }
-    
-    JumpLine();
+    Serial.printf("\n\nTime:");Serial.print(total_t);
+}
 
-    /* Bytes are stored in ascending order of their 
-    //"numeric weight" at successive memory addresses 
-    (small end first or little-endian).*/
-    Serial.print("Little Endian: ");
-    for (byte i=0; i < SHA256_SIZE ; i++){
-        if(hash2[i]<0x10) 
+void MinerBitcoin::Getsha256()
+{
+    std::string strHash; 
+    for(int8_t i=0;i<SHA256_SIZE;i++)
+        Serial.print(hash[i], HEX);
+}
+
+void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, const char* aZeros)
+{
+    Serial.begin(Port);
+    
+    this->NumberBlock=nBlock;
+    this->PreviousHash=pHash;
+    this->Transactions=nTrans;
+    this->AmountZeros=aZeros;
+    int nonce=0;
+
+    while(true)
+    {
+        nonce+=1;
+
+        std::string str = (
+        std::to_string(nonce) + 
+        std::to_string(NumberBlock) + 
+        nTrans + 
+        pHash
+        );
+        MinerBitcoin::sha256(str);
+        
+        for(size_t i=0;i<strlen(AmountZeros);i++)
+        {AmountZeros = "0";}
+        
+        if(Serial.findUntil(hash, AmountZeros))
         {
-             Serial.print('0'); 
+            Serial.print("\nHash: ");MinerBitcoin::Getsha256();
+            Serial.printf("\nNonce: ");Serial.print(nonce);
+            break;
         }
-        Serial.print(hash2[i], HEX);
-    }    
+    }
 }

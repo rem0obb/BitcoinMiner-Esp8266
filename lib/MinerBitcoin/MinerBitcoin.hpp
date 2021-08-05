@@ -6,34 +6,32 @@
 #include <sha256.hpp>
 #include <stdint.h>
 #include <Arduino.h>
+#include <ESP8266WiFi.h>
+#include <string>
 
 /* ========================== Macros ========================== */
 
-#define MaxHashByts 80
-#define Time 1000
-#define TimeRunCode 100
+#define DefaultZeros "000"
+#define Time 2000
+#define TimeRunCode 300
 #define Port 19200
-#define JumpLine(){ Serial.println(); };
-#define pinLight(){ pinMode(LED_BUILTIN, OUTPUT); delay(Time);digitalWrite(LED_BUILTIN, 0x1);}
-#define pinLow(){ pinMode(LED_BUILTIN, OUTPUT); delay(Time);digitalWrite(LED_BUILTIN, 0x0);}
+#define pinLight(){ pinMode(LED_BUILTIN, OUTPUT);delay(Time);digitalWrite(LED_BUILTIN, 0x1);}
+#define pinLow(){ pinMode(LED_BUILTIN, OUTPUT);delay(Time);digitalWrite(LED_BUILTIN, 0x0);}
 
 /* ========================== classes and functions ========================== */
 
 class MinerBitcoin
 {
-    protected:
-        SHA256 Hasher;
-        SHA256 HashAgain;
-
-        unsigned long start_t, end_t, total_t; 
-        
-        char HeaderHex[161] = "0100000081cd02ab7e569e8bcd9317e2fe99f2de44d49ab2b8851ba4a308000000000000e320b6c2fffc8d750423db8b1eb942ae710e951ed797f7affc8892b0f1fc122bc7f5d74df2b9441a42a14695";
-        uint8_t HashBytes[MaxHashByts];
+    protected:        
+        int NumberBlock;
+        const char* Transactions;
+        const char* AmountZeros;  
+        const char* PreviousHash;
 
     public:
-        void MinerBit(void);
+        void MinerBit(int nBlock, const char* nTrans, const char* pHash, const char* aZeros=DefaultZeros);
+        void sha256(std::string str);
+        void Getsha256();
 };
-
-uint8_t* HexDecode(const char* value, size_t len, uint8_t* output);
 
 #endif // !MINER_H
