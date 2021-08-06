@@ -59,5 +59,7 @@ the code and make it generate a hash (signature) faster
 ## Notes
 
 > I am not responsible if your esp8266 suffers consequences due to mining
+
 > mining takes time
+
 > code in testing and future optimizations
