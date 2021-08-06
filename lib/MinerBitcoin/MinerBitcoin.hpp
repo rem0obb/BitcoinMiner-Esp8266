@@ -11,7 +11,7 @@
 
 /* ========================== Macros ========================== */
 
-#define DefaultZeros 2
+#define DefaultZeros 4
 #define Time 2000
 #define TimeRunCode 300
 #define Port 19200
