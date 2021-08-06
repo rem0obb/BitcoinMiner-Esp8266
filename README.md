@@ -27,8 +27,13 @@ void setup() {
 
   MinerBitcoin miner;
 
+  int nBlock = 0;
+  const char* Transactions = "satoshi->mob->fall";  
+  int Difficulty = 20;  
+  const char* pHash = "0000000000000000000987616aad095254ca83a34abd34c483057417c03dff6f";
+
   pinLight();
-  miner.MinerBit(0, "satoshi->fall->onion", "0000000000000000000987616aad095254ca83a34abd34c483057417c03dff6f", 20);
+  miner.MinerBit(nBlock, Transactions, pHash, Difficulty);
   pinLow();
   
 }
