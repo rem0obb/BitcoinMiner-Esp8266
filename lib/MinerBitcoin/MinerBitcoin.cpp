@@ -29,7 +29,7 @@ void MinerBitcoin::Getsha256()
         Serial.print(hash[i], HEX);
 }
 
-void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, const char* aZeros)
+void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, int aZeros)
 {
     Serial.begin(Port);
     
@@ -41,8 +41,6 @@ void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, c
 
     while(true)
     {
-        nonce+=1;
-
         std::string str = (
         std::to_string(nonce) + 
         std::to_string(NumberBlock) + 
@@ -51,14 +49,12 @@ void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, c
         );
         MinerBitcoin::sha256(str);
         
-        for(size_t i=0;i<strlen(AmountZeros);i++)
-        {AmountZeros = "0";}
-        
-        if(Serial.findUntil(hash, AmountZeros))
+        if(hash[1] == 0 && hash[2] == 0 && hash[AmountZeros] == 0)
         {
             Serial.print("\nHash: ");MinerBitcoin::Getsha256();
             Serial.printf("\nNonce: ");Serial.print(nonce);
             break;
-        }
+        }else
+            nonce+=1;
     }
 }
