@@ -25,13 +25,13 @@ class MinerBitcoin
     protected:        
         int NumberBlock;
         const char* Transactions;
-        const char* AmountZeros;  
+        int AmountZeros;  
         const char* PreviousHash;
-
+        
     public:
-        void MinerBit(int nBlock, const char* nTrans, const char* pHash, const char* aZeros=DefaultZeros);
+        void MinerBit(int nBlock, const char* nTrans, const char* pHash, int aZeros=DefaultZeros);
         void sha256(std::string str);
-        void Getsha256();
+        void getsha256();
 };
 
 #endif // !MINER_H
