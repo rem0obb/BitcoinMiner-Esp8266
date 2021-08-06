@@ -17,7 +17,7 @@ void MinerBitcoin::sha256(std::string str)
     HashAgain.doFinal(hash);
 
     end_t = micros();
-    total_t = (start_t - end_t);
+    total_t = (end_t - start_t);
     
     Serial.printf("\n\nTime:");Serial.print(total_t);
 }
