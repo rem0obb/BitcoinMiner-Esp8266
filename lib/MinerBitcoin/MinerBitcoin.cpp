@@ -53,6 +53,7 @@ void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, i
         if(hash[0] == 0 
         && hash[1] == 0
         && hash[2] == 0 
+        && hash[3] == 0
         && hash[AmountZeros] == 0)
         {
             Serial.print("\nHash: ");MinerBitcoin::getsha256();
