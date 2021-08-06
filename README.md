@@ -49,7 +49,7 @@ just pass the amount to `20` at the end of the function
 
 if you wanted to edit the output of the Serial port, 
 just enter the code and go to 
-#Port in `MinerBitcoin.hpp` and put the port you want
+`#Port` in `MinerBitcoin.hpp` and put the port you want
 by default the port is in `19200`
 
 
