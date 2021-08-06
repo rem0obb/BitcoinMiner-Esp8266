@@ -23,22 +23,21 @@ was successfully mined, just turn on the led using the following function, `pinL
 
 ```C++
 
-
 void setup() {
 
   MinerBitcoin miner;
-  
-  pinLight();
-  miner.MinerBit(694344, "satoshi->mob", "0000000000000000000987616aad095254ca83a34abd34c483057417c03dff6f", "00000000000000000000");
-  pinLow();
 
+  pinLight();
+  miner.MinerBit(0, "satoshi->fall->onion", "0000000000000000000987616aad095254ca83a34abd34c483057417c03dff6f", 20);
+  pinLow();
+  
 }
 
 ```
 ##### difficulty 
-by default the block mining difficulty is set to `"00"` 
+by default the block mining difficulty is set to `2` 
 if you want to pass the difficulty 
-just pass the amount to `"0"` at the end of the function
+just pass the amount to `20` at the end of the function
 
 
 #### Serial Port
