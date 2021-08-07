@@ -40,12 +40,12 @@ void setup() {
 
 ```
 ##### difficulty 
-by default the block mining difficulty is set to `2` 
+by default the block mining difficulty is set to `4` 
 if you want to pass the difficulty 
 just pass the amount to `20` at the end of the function
 
 
-#### Serial Port
+##### Serial Port
 
 if you wanted to edit the output of the Serial port, 
 just enter the code and go to 
