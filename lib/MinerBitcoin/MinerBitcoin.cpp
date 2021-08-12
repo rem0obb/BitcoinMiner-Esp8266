@@ -1,32 +1,33 @@
+/**
+ * @file MinerBitcoin.hpp
+ * @author VitorMob
+ * @brief lib for block mining
+ * @version 0.1
+ * @date 2021-08-09
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include <MinerBitcoin.hpp>
 
-// ========================= Miner  ========================= //
-
-byte hash[SHA256_SIZE]; // Generate Hash variable
+byte hash[SHA256_SIZE]; // Hash variable
 
 void MinerBitcoin::sha256(std::string str)
 {   
     SHA256 Hasher;
     SHA256 HashAgain;
     
-    int8_t start_t=0, end_t=0, total_t=0;
-
-    start_t = micros();
-
     HashAgain.doUpdate((byte*)&str, str.size());
     HashAgain.doFinal(hash);
-
-    end_t = micros();
-    total_t = (end_t - start_t);
-    
-    Serial.printf("\n\nTime:");Serial.print(total_t);
 }
 
-void MinerBitcoin::getsha256()
+std::string MinerBitcoin::getsha256()
 {
-    std::string strHash; 
-    for(int8_t i=0;i<SHA256_SIZE;i++)
-        Serial.print(hash[i], HEX);
+    std::string str;
+    for(size_t i=0;i<SHA256_SIZE;i++)
+        str = Serial.print(hash[i], HEX);
+    return str;
 }
 
 void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, int aZeros)
@@ -39,16 +40,23 @@ void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, i
     this->AmountZeros=aZeros;
     int nonce=0;
 
+    delay(Time);
+    
+    log.__logging__(WARNING, "Mining...");
     while(true)
     {
         std::string str = (
-        std::to_string(nonce) + 
-        std::to_string(NumberBlock) + 
-        nTrans + 
-        pHash
+        std::to_string(nonce)+ 
+        std::to_string(this->NumberBlock)+ 
+        this->Transactions+ 
+        this->PreviousHash
         );
 
-        MinerBitcoin::sha256(str);
+        MinerBitcoin::sha256(str);Serial.print("\r");
+        
+        //Debugger mining...
+        Serial.printf("[Nonce] %i  ", nonce);
+        Serial.printf("[Hash]");getsha256();
 
         if(hash[0] == 0 
         && hash[1] == 0
@@ -56,10 +64,13 @@ void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, i
         && hash[3] == 0
         && hash[AmountZeros] == 0)
         {
-            Serial.print("\nHash: ");MinerBitcoin::getsha256();
-            Serial.printf("\nNonce: ");Serial.print(nonce);
-            Serial.println("\nStatus: Mined");
+            log.__logging__(DONE, "[Block Mined !]\n");
+            log.__logging__(DONE,"[Block] %i\n", this->NumberBlock);
+            log.__logging__(DONE,"[Hash] %s", getsha256());
+            log.__logging__(DONE,"[Nonce] %i\n", nonce);
 
+            Serial.print("[Status] Block Mined !");
+            
             break;
         }else
             nonce+=1;
