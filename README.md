@@ -64,7 +64,7 @@ the processing power of esp8266, i am always finding a way to optimize
 the code and make it generate a hash (signature) faster.
 if you want to clean a eeprom flash memory from esp just run the 
 `log.__clean_logging__()` function this way all bytes will be cleared
-for read memory enough pass function log.__read_logging__()`.
+for read memory enough pass function `log.__read_logging__()`.
 
 ## Notes
 
