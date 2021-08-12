@@ -20,7 +20,6 @@
 
 #define DefaultZeros 4
 #define Time 2000
-#define TimeRunCode 300
 #define Port 19200
 #define pinLight(){ pinMode(LED_BUILTIN, OUTPUT);delay(Time);digitalWrite(LED_BUILTIN, 0x1);}
 #define pinLow(){ pinMode(LED_BUILTIN, OUTPUT);delay(Time);digitalWrite(LED_BUILTIN, 0x0);}
