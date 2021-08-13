@@ -20,9 +20,9 @@ int logging::__logging__(std::string __macro__, std::string __info__, ...)
 
     delay(LongTime);
 
-    if(__macro__ != ERROR &&
-    __macro__ != WARNING && 
-    __macro__ != DONE &&
+    if(__macro__ != ERROR ||
+    __macro__ != WARNING ||
+    __macro__ != DONE ||
     __macro__ != INFO) return EXIT_FAILURE;
 
     Serial.println(str.c_str());
