@@ -15,8 +15,7 @@
 
 #include <sha256.hpp>
 #include <Arduino.h>
-#include <logging.hpp>
-
+#include <iostream>
 
 #define DefaultZeros 4
 #define Time 2000
@@ -28,14 +27,14 @@
 class MinerBitcoin
 {
     protected:
-        logging log;  
         int NumberBlock;
         const char* Transactions;
         int AmountZeros;  
         const char* PreviousHash;
-        
+        int TimeStamp;
+
     public:
-        void MinerBit(int nBlock, const char* nTrans, const char* pHash, int aZeros=DefaultZeros);
+        void MinerBit(int nBlock, const char* nTrans, const char* pHash, int tStamp, int aZeros=DefaultZeros);
         void sha256(std::string str);
         std::string getsha256();
 };
