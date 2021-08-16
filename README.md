@@ -7,51 +7,58 @@ A bitcoin block miner using esp8266
 
 
 - [Help](#help)
+# BitcoinMiner-Esp8266
+
+A bitcoin block miner using esp8266
+
+
+## Index
+
+
+- [Help](#help)
 
 - [Info](#info)
 
 - [Notes](#notes)
 
-## Help 
+## Help
 
-to mine a block/validate you just download the MinerBitcoin lib and 
-then include it in your main.ino, then create a `MinerBitcoin miner` object 
-then call the function for mining, if you wanted to be notified that it 
+to mine a block/validate you just download the MinerBitcoin lib and
+then include it in your main.ino, then create a `MinerBitcoin miner` object
+then call the function for mining, if you wanted to be notified that it
 was successfully mined, just turn on the led using the following function, `pinLight()` and `pinLow()`
 
-> example 
+> example
 
 ```C++
 
 void setup() {
 
   MinerBitcoin miner;
-  logging log;
 
+  long long int tStamp = 0x2F0E95A638;
   int nBlock = 0;
-  const char* Transactions = "satoshi->mob->fall";  
-  int Difficulty = 20;  
+  const char* Transactions = "satoshi->mob->fall";
+  int Difficulty = 20;
   const char* pHash = "0000000000000000000987616aad095254ca83a34abd34c483057417c03dff6f";
 
   pinLight();
-  miner.MinerBit(nBlock, Transactions, pHash, Difficulty);
+  miner.MinerBit(nBlock, Transactions,  pHash, tStamp, Difficulty);
   pinLow();
 
-  log.__read_logging__();
-  
 }
 
 ```
-##### difficulty 
-by default the block mining difficulty is set to `4` 
-if you want to pass the difficulty 
+##### difficulty
+by default the block mining difficulty is set to `4`
+if you want to pass the difficulty
 just pass the amount to `20` at the end of the function
 
 
 ##### Serial Port
 
-if you wanted to edit the output of the Serial port, 
-just enter the code and go to 
+if you wanted to edit the output of the Serial port,
+just enter the code and go to
 `#Port` in `MinerBitcoin.hpp` and put the port you want
 by default the port is in `19200`
 
@@ -59,10 +66,10 @@ by default the port is in `19200`
 ## Info
 
 
-the code is under constant evaluation and testing... mining can be a little slow due to 
-the processing power of esp8266, i am always finding a way to optimize 
+the code is under constant evaluation and testing... mining can be a little slow due to
+the processing power of esp8266, i am always finding a way to optimize
 the code and make it generate a hash (signature) faster.
-if you want to clean a eeprom flash memory from esp just run the 
+if you want to clean a eeprom flash memory from esp just run the
 `log.__clean_logging__()` function this way all bytes will be cleared
 for read memory enough pass function `log.__read_logging__()`.
 
@@ -74,4 +81,4 @@ for read memory enough pass function `log.__read_logging__()`.
 
 > code optimized for best mined
 
-> logging usage memory flash emulate eeprom for storage bytes in block mined
+> removed logging
