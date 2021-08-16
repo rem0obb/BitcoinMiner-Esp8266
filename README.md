@@ -1,13 +1,5 @@
 # BitcoinMiner-Esp8266
 
-A bitcoin block miner using esp8266
-
-
-## Index
-
-
-- [Help](#help)
-# BitcoinMiner-Esp8266
 
 A bitcoin block miner using esp8266
 
