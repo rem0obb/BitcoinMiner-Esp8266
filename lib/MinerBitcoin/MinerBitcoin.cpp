@@ -11,29 +11,29 @@
 
 #include <MinerBitcoin.hpp>
 
-byte hash[SHA256_SIZE]; // Hash variable
+byte hash[SHA256_SIZE];
 
 void MinerBitcoin::sha256(std::string str)
-{   
-    SHA256 Hasher;
-    SHA256 HashAgain;
-    
-    HashAgain.doUpdate((byte*)&str, str.size());
-    HashAgain.doFinal(hash);
+{ 
+    SHA256 sha256;
+
+    sha256.doUpdate(str.c_str(), sizeof(str));
+    sha256.doFinal(hash);
 }
 
 std::string MinerBitcoin::getsha256()
 {
     std::string str;
-    for(size_t i=0;i<SHA256_SIZE;i++)
+    for(byte i=0;i<SHA256_SIZE;i++)
         str = Serial.print(hash[i], HEX);
     return str;
 }
 
-void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, int aZeros)
+void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, int  tStamp, int aZeros)
 {
     Serial.begin(Port);
     
+    this->TimeStamp=tStamp;
     this->NumberBlock=nBlock;
     this->PreviousHash=pHash;
     this->Transactions=nTrans;
@@ -42,12 +42,12 @@ void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, i
 
     delay(Time);
     
-    log.__logging__(WARNING, "Mining...");
     while(true)
     {
         std::string str = (
         std::to_string(nonce)+ 
         std::to_string(this->NumberBlock)+ 
+        std::to_string(this->TimeStamp)+
         this->Transactions+ 
         this->PreviousHash
         );
@@ -56,22 +56,19 @@ void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, i
         
         //Debugger mining...
         Serial.printf("[Nonce] %i  ", nonce);
-        Serial.printf("[Hash]");getsha256();
+        Serial.print("[Hash]");getsha256();
 
-        if(hash[0] == 0 
-        && hash[1] == 0
-        && hash[2] == 0 
-        && hash[3] == 0
-        && hash[AmountZeros] == 0)
-        {
-            log.__logging__(DONE, "[Block Mined !]\n");
-            log.__logging__(DONE,"[Block] %i\n", this->NumberBlock);
-            log.__logging__(DONE,"[Hash] %s", getsha256());
-            log.__logging__(DONE,"[Nonce] %i\n", nonce);
-
-            Serial.print("[Status] Block Mined !");
-            
-            break;
+        if(getsha256()[0] == '0' && 
+           getsha256()[1] == '0' &&
+           getsha256()[2] == '0' &&
+           getsha256()[3] == '0' &&
+           getsha256()[AmountZeros] == '0'
+           ){
+                Serial.println("[Block Mined]");
+                Serial.printf("[Nonce] %i  ", nonce);
+                Serial.print("[Hash]");getsha256();
+        
+                break;
         }else
             nonce+=1;
     }
