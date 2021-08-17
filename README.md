@@ -61,6 +61,7 @@ by default the port is in `19200`
 the code is under constant evaluation and testing... mining can be a little slow due to
 the processing power of esp8266, i am always finding a way to optimize
 the code and make it generate a hash (signature) faster.
+for monitoring esp8266 job in command terminal execute `tail -f /dev/ttyUSB0` in linux.
 
 ## Notes
 
