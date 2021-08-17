@@ -17,7 +17,7 @@
 #include <Arduino.h>
 #include <iostream>
 
-#define DefaultZeros 4
+#define DefaultZeros 3
 #define Time 2000
 #define Port 19200
 #define pinLight(){ pinMode(LED_BUILTIN, OUTPUT);delay(Time);digitalWrite(LED_BUILTIN, 0x1);}
