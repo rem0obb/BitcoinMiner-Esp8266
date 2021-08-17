@@ -17,16 +17,16 @@ void MinerBitcoin::sha256(std::string str)
 { 
     SHA256 sha256;
 
-    sha256.doUpdate(str.c_str(), sizeof(str));
+    sha256.doUpdate(str.c_str(), str.size());
     sha256.doFinal(hash);
 }
 
 std::string MinerBitcoin::getsha256()
 {
     std::string str;
-    for(byte i=0;i<SHA256_SIZE;i++)
+    for(int i=0;i<32;i++)
         str = Serial.print(hash[i], HEX);
-    return str;
+    return str.c_str();
 }
 
 void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, int  tStamp, int aZeros)
@@ -55,21 +55,23 @@ void MinerBitcoin::MinerBit(int nBlock, const char* nTrans, const char* pHash, i
         MinerBitcoin::sha256(str);Serial.print("\r");
         
         //Debugger mining...
+        Serial.print("[Status] Mining  ");
         Serial.printf("[Nonce] %i  ", nonce);
-        Serial.print("[Hash]");getsha256();
+        Serial.print("[Hash]  ");getsha256();
 
-        if(getsha256()[0] == '0' && 
-           getsha256()[1] == '0' &&
-           getsha256()[2] == '0' &&
-           getsha256()[3] == '0' &&
-           getsha256()[AmountZeros] == '0'
-           ){
-                Serial.println("[Block Mined]");
-                Serial.printf("[Nonce] %i  ", nonce);
-                Serial.print("[Hash]");getsha256();
-        
-                break;
-        }else
+        if(hash[0]==0&&
+           hash[1]==0&&
+           hash[2]==0&&
+           hash[3]==0&&
+           hash[AmountZeros]==0)
+        {
+            Serial.println("\n\n[Status] Mined ");
+            Serial.printf("[Nonce] %i  ", nonce);
+            Serial.print("\n[Hash] ");getsha256();
+            break;
+        }else if(nonce == 10000000000)
+            break;
+        else
             nonce+=1;
     }
 }
